@@ -42,14 +42,14 @@ function CastDevices(props: CastDevicesProps) {
           value={url}
           onChange={handleChange}
         />
-        <List>
-          {props.devices.map((device: CastDevice, key: number) => (
-            <ListItem key={key} button onClick={handleChosen(device)}>
-              <ListItemText primary={`${device.name} (${device.host})`} />
-            </ListItem>
-          ))}
-        </List>
       </DialogContent>
+      <List>
+        {props.devices.map((device: CastDevice, key: number) => (
+          <ListItem key={key} button onClick={handleChosen(device)}>
+            <ListItemText primary={`${device.name} (${device.host})`} />
+          </ListItem>
+        ))}
+      </List>
     </Dialog>
   );
 }
