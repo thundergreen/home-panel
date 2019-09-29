@@ -4,6 +4,8 @@
   "dockerFile": "../Dockerfile.dev",
   "appPort": [3000, 8234],
   "runArgs": [
+    "--network",
+    "host",
     "-e",
     "GIT_EDITOR=\"code --wait\"",
     "-v",
