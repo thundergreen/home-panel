@@ -160,6 +160,7 @@ function Onboarding(props: OnboardingProps) {
       {loginCredentials ? (
         <Main
           {...props}
+          apiClient={client}
           config={config}
           editing={0}
           loginCredentials={loginCredentials}

@@ -9,6 +9,7 @@ import Slide from '@material-ui/core/Slide';
 
 import { ConfigProps } from './Configuration/Config';
 import { parseTokens } from './HomeAssistant/Utils/auth';
+import CastDevices from './Cast/CastDevices';
 import clone from './Utils/clone';
 import Configuration from './Configuration/Configuration';
 import Drawer from './Drawer/Drawer';
@@ -41,12 +42,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface MainProps extends RouteComponentProps, ConfigProps {
+  apiClient: any;
   loginCredentials: any;
-  handleLogout(): any;
+  handleLogout: () => void;
 }
 
 let moveTimeout: NodeJS.Timeout;
 function Main(props: MainProps) {
+  const [castDevices, setCastDevices] = React.useState();
   const [hassUrl, setHassUrl] = React.useState();
   const [hassLogin, setHassLogin] = React.useState(false);
   const [hassConnected, setHassConnected] = React.useState(false);
@@ -105,6 +108,23 @@ function Main(props: MainProps) {
     setBack(false);
   }
 
+  function handleCast() {
+    (async () => {
+      const castService = await props.apiClient.service('cast');
+      let data = await castService.get(0);
+      if (data) {
+        setCastDevices(data);
+      }
+    })();
+  }
+
+  function handleCastChosen(host: string, url: string) {
+    (async () => {
+      const castService = await props.apiClient.service('cast');
+      await castService.create({ host, url });
+    })();
+  }
+
   const classes = useStyles();
 
   if (!props.location.state)
@@ -143,6 +163,7 @@ function Main(props: MainProps) {
         back={back}
         currentPage={currentPage}
         editing={editing}
+        handleCast={handleCast}
         hassConnected={hassConnected}
         mouseMoved={mouseMoved}
         userInitials={userInitials}
@@ -199,6 +220,9 @@ function Main(props: MainProps) {
             />
           )}
         </main>
+      )}
+      {castDevices && (
+        <CastDevices devices={castDevices} handleChosen={handleCastChosen} />
       )}
     </div>
   );

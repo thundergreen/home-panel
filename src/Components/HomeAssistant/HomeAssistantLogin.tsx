@@ -16,7 +16,7 @@ import HALogin from '../../Resources/ha-login.svg';
 import FormControl from '@material-ui/core/FormControl';
 import { DialogTitle } from '@material-ui/core';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((_theme: Theme) => ({
   root: {
     height: '100%',
     width: '100%'

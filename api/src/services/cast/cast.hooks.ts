@@ -9,7 +9,7 @@ export default {
   before: {
     all: [authenticate('jwt')],
     find: [],
-    get: [getDevices()],
+    get: [],
     create: [],
     update: [],
     patch: [],
@@ -19,9 +19,9 @@ export default {
   after: {
     all: [],
     find: [],
-    get: [],
-    create: [],
-    update: [castToDevice()],
+    get: [getDevices()],
+    create: [castToDevice()],
+    update: [],
     patch: [],
     remove: []
   },

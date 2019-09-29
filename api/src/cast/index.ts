@@ -4,10 +4,10 @@ import logger from '../logger';
 type CastDevice = {
   config: { name: string; addresses: string[] };
   host: string;
-  close: (arg0: () => void) => void;
-  pause: (arg0: () => void) => void;
-  play: (arg0: string, arg1: number, arg2: () => void) => void;
-  stop: (arg0: () => void) => void;
+  play: (resource: string, seconds: number, callback: () => void) => void;
+  pause: (callback: () => void) => void;
+  stop: (callback: () => void) => void;
+  close: (callback: () => void) => void;
 };
 
 const devices: CastDevice[] = [];
@@ -16,34 +16,26 @@ export function getDevices(): CastDevice[] {
   return devices;
 }
 
+export function getDeviceHosts(): { host: string; name: string }[] {
+  return devices.map((device: CastDevice) => ({
+    host: device.host,
+    name: device.config.name
+  }));
+}
+
 export function getDevice(host: string): CastDevice | undefined {
   return devices.find((device: CastDevice) => device.host === host);
 }
 
 export function castToDevice(device: CastDevice, url: string) {
+  logger.info(
+    'Cast - %s (%s) - Play: %s',
+    device.config.name,
+    device.host,
+    url
+  );
   device.play(url, 0, function() {
-    logger.info('Cast - Playing in your chromecast');
-
-    setTimeout(function() {
-      //Pause the video
-      device.pause(function() {
-        logger.info('Cast - Paused');
-      });
-    }, 20000);
-
-    setTimeout(function() {
-      //Stop video
-      device.stop(function() {
-        logger.info('Cast - Stopped');
-      });
-    }, 30000);
-
-    setTimeout(function() {
-      //Close the streaming
-      device.close(function() {
-        logger.info('Cast - Closed');
-      });
-    }, 40000);
+    logger.info('Cast - Playing');
   });
 }
 

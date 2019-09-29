@@ -11,10 +11,10 @@ export default (_options = {}): Hook => {
     if (!host) throw new Error('No host specified.');
     if (!url) throw new Error('No url specified.');
 
-    const device = getDevice(data.device);
+    const device = getDevice(host);
     if (!device) throw new Error('Device not found.');
 
-    castToDevice(device, data.url);
+    castToDevice(device, url);
 
     return context;
   };

@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
@@ -23,6 +25,7 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import { ConfigurationProps } from '../Configuration/Config';
+import Cast from '../../Resources/cast.svg';
 import Items, { ItemsProps, MenuItemsProps } from './Items';
 import HomeAssistantLogin from '../HomeAssistant/HomeAssistantLogin';
 
@@ -57,6 +60,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     padding: theme.spacing(1, 1.5, 1, 1.5)
   },
+  castContainer: {
+    height: '100%',
+    width: '100%'
+  },
   heading: {
     flex: 1
   },
@@ -79,6 +86,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   menuButton: {
     marginRight: theme.spacing(2)
+  },
+  media: {
+    width: '100%',
+    height: 48
   }
 }));
 
@@ -90,6 +101,7 @@ interface ResponsiveDrawerProps extends RouteComponentProps {
   hassConnected: boolean;
   mouseMoved: boolean;
   userInitials: string;
+  handleCast: () => void;
   handleHassLogin: (url: string) => void;
   handleLogout: () => void;
   handleBack: () => void;
@@ -101,6 +113,11 @@ function ResponsiveDrawer(props: ResponsiveDrawerProps) {
 
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen);
+  }
+
+  function handleCast() {
+    setMobileOpen(false);
+    props.handleCast();
   }
 
   const drawer = (
@@ -145,6 +162,15 @@ function ResponsiveDrawer(props: ResponsiveDrawerProps) {
               <HomeAssistantLogin handleHassLogin={props.handleHassLogin} />
             </ListItem>
           )}
+          <ListItem>
+            <ButtonBase className={classes.castContainer} onClick={handleCast}>
+              <CardMedia
+                className={classes.media}
+                image={Cast}
+                title="Log in to Home Assistant"
+              />
+            </ButtonBase>
+          </ListItem>
           <ListItem button onClick={props.handleLogout}>
             <ListItemIcon>
               <span className={classnames('mdi', 'mdi-logout', classes.icon)} />
