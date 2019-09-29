@@ -12,6 +12,10 @@ type CastDevice = {
 
 const devices: CastDevice[] = [];
 
+export function getDevices(): CastDevice[] {
+  return devices;
+}
+
 export function getDevice(host: string): CastDevice | undefined {
   return devices.find((device: CastDevice) => device.host === host);
 }
